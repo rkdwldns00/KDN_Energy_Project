@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +14,10 @@ public class GameManager : MonoBehaviour
     public GameObject[] maps;
     public bool isDebuging;
     public Image blackCanvas;
+    public GameObject outSideBackGround;
+    public GameObject CaveBackGround;
+    public GameObject PauseMenu;
+    PlayerInput inputSys;
     float blackCanvasAlpha;
     bool isEnter = false;
     GameObject player;
@@ -32,6 +37,16 @@ public class GameManager : MonoBehaviour
         if (!isDebuging)
         {
             maps[0].SetActive(true);
+            if (maps[0].name[1] == '1')
+            {
+                outSideBackGround.SetActive(true);
+                CaveBackGround.SetActive(false);
+            }
+            else
+            {
+                outSideBackGround.SetActive(false);
+                CaveBackGround.SetActive(true);
+            }
         }
         else
         {
@@ -39,6 +54,7 @@ public class GameManager : MonoBehaviour
         }
 
         player = FindObjectOfType<PlayerControll>().gameObject;
+        inputSys = GetComponent<PlayerInput>();
         spawnPoint = GameObject.Find("Spawn Point").transform.position;
         player.transform.position = spawnPoint;
     }
@@ -53,6 +69,11 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.F1))
         {
             helpKeyUi.SetActive(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
         }
 
         blackCanvas.color = new Color(blackCanvas.color.r, blackCanvas.color.g, blackCanvas.color.b, blackCanvas.color.a + ((blackCanvas.color.a + blackCanvasAlpha) / 2f - blackCanvas.color.a) * Time.deltaTime * 8);
@@ -97,8 +118,35 @@ public class GameManager : MonoBehaviour
         maps[nowMap].SetActive(true);
         spawnPoint = GameObject.FindWithTag("Respawn").transform.position;
         player.transform.position = spawnPoint;
+        if (maps[nowMap].name[1] == '1')
+        {
+            outSideBackGround.SetActive(true);
+            CaveBackGround.SetActive(false);
+        }
+        else
+        {
+            outSideBackGround.SetActive(false);
+            CaveBackGround.SetActive(true);
+        }
 
         blackCanvasAlpha = 0f;
         isEnter = false;
+    }
+
+    void Pause()
+    {
+        inputSys.enabled = false;
+        PauseMenu.SetActive(true);
+    }
+
+    public void UnPause()
+    {
+        inputSys.enabled=true;
+        PauseMenu.SetActive(false);
+    }
+
+    public void ReStart()
+    {
+        SceneManager.LoadScene(0);
     }
 }
