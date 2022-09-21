@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
             maps[i].SetActive(true);
         }
         questManager.GetComponent<QuestManager>().maxScore = FindObjectsOfType<QuestNPC>().Length * 10;
+        Debug.Log("문제상자개수 : " + FindObjectsOfType<QuestNPC>().Length);
         for (int i = 1; i < maps.Length; i++)
         {
             maps[i].SetActive(false);
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            maps[maps.Length-1].SetActive(true);
+            maps[maps.Length - 1].SetActive(true);
         }
 
         player = FindObjectOfType<PlayerControll>().gameObject;
@@ -93,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject == player)
+        if (collision.gameObject == player)
         {
             player.transform.position = spawnPoint;
         }
@@ -101,7 +102,8 @@ public class GameManager : MonoBehaviour
 
     public void nextMap()
     {
-        if(!(nowMap < maps.Length-1) || isEnter) {
+        if (isEnter)
+        {
             return;
         }
         isEnter = true;
@@ -112,6 +114,11 @@ public class GameManager : MonoBehaviour
     {
         blackCanvasAlpha = 1.3f;
         yield return new WaitForSeconds(1f);
+
+        if (nowMap == maps.Length - 1)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
 
         maps[nowMap].SetActive(false);
         nowMap++;
@@ -135,13 +142,14 @@ public class GameManager : MonoBehaviour
 
     void Pause()
     {
-        inputSys.enabled = false;
+        //inputSys.reset();
+        //inputSys.enabled = false;
         PauseMenu.SetActive(true);
     }
 
     public void UnPause()
     {
-        inputSys.enabled=true;
+        //inputSys.enabled=true;
         PauseMenu.SetActive(false);
     }
 

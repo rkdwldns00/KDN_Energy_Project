@@ -7,7 +7,7 @@ public class PlayerControll : MonoBehaviour
     PlayerInput inputSys;
     Rigidbody2D rigid;
     Animator animator;
-    SpriteRenderer renderer;
+    SpriteRenderer render;
     public float moveSpeed;
     public float jumpPower;
     void Start()
@@ -15,7 +15,7 @@ public class PlayerControll : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         inputSys = FindObjectOfType<PlayerInput>();
         animator = GetComponent<Animator>();
-        renderer = GetComponent<SpriteRenderer>();
+        render = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -46,11 +46,11 @@ public class PlayerControll : MonoBehaviour
 
         if (inputSys.Hor > 0f)
         {
-            renderer.flipX = false;
+            render.flipX = false;
         }
         else if(inputSys.Hor < 0f)
         {
-            renderer.flipX = true;
+            render.flipX = true;
         }
 
         if(!inputSys.GetHorDown)

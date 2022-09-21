@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,7 +39,9 @@ public class QuestManager : MonoBehaviour
     GameObject player;
     int level = 0;
     int score = 0;
+    bool isSet = false;
     Question nowQuestion;
+    int questIndex = 0;
     
     void Start()
     {
@@ -52,7 +56,7 @@ public class QuestManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     void init()
@@ -64,7 +68,23 @@ public class QuestManager : MonoBehaviour
         //hp = maxHp;
         level++;
         //nowQuestion = questionList[]
-        nowQuestion = questionList[Random.Range(0, questionList.Length)];
+        /*int randomIndex = UnityEngine.Random.Range(0, questionList.Length);
+        nowQuestion = questionList[randomIndex];*/
+        if (!isSet)
+        {
+            isSet = true;
+            for (int i = 0; i < questionList.Length; i++)
+            {
+                int r1 = UnityEngine.Random.Range(0, questionList.Length - 1);
+                int r2 = UnityEngine.Random.Range(0, questionList.Length - 1);
+
+                Question temp = questionList[r1];
+                questionList[r1] = questionList[r2];
+                questionList[r2] = temp;
+            }
+        }
+        nowQuestion = questionList[questIndex];
+        questIndex++;
         ui.questShow(level, nowQuestion);
         //ui.hpShow(hp, maxHp);
         ui.scoreShow(score, maxScore);
