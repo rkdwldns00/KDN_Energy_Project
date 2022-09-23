@@ -38,7 +38,7 @@ public class QuestManager : MonoBehaviour
     //int hp;
     GameObject player;
     int level = 0;
-    int score = 0;
+    public static float score = 0;
     bool isSet = false;
     Question nowQuestion;
     int questIndex = 0;
@@ -97,7 +97,7 @@ public class QuestManager : MonoBehaviour
         DisableButton(field);
         if (nowQuestion.answerI == (int)answerI || nowQuestion.answerT == (string)answerT)
         {
-            score += 10;
+            score += 100/maxScore;
             ui.scoreShow(score, maxScore);
             ui.answerShow(true, nowQuestion);
         }

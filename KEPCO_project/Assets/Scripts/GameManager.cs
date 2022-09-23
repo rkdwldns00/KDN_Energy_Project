@@ -18,18 +18,19 @@ public class GameManager : MonoBehaviour
     public GameObject CaveBackGround;
     public GameObject PauseMenu;
     PlayerInput inputSys;
-    float blackCanvasAlpha;
+    float blackCanvasAlpha = 1.3f;
     bool isEnter = false;
     GameObject player;
     Vector3 spawnPoint;
     int nowMap = 0;
     void Start()
     {
+        QuestManager.score = 0;
         for (int i = 1; i < maps.Length; i++)
         {
             maps[i].SetActive(true);
         }
-        questManager.GetComponent<QuestManager>().maxScore = FindObjectsOfType<QuestNPC>().Length * 10;
+        questManager.GetComponent<QuestManager>().maxScore = FindObjectsOfType<QuestNPC>().Length;
         Debug.Log("문제상자개수 : " + FindObjectsOfType<QuestNPC>().Length);
         for (int i = 1; i < maps.Length; i++)
         {
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
         inputSys = GetComponent<PlayerInput>();
         spawnPoint = GameObject.Find("Spawn Point").transform.position;
         player.transform.position = spawnPoint;
+        StartCoroutine(blackUp());
     }
 
     // Update is called once per frame
@@ -75,6 +77,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Pause();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            nextMap();
         }
 
         blackCanvas.color = new Color(blackCanvas.color.r, blackCanvas.color.g, blackCanvas.color.b, blackCanvas.color.a + ((blackCanvas.color.a + blackCanvasAlpha) / 2f - blackCanvas.color.a) * Time.deltaTime * 8);
@@ -156,5 +163,11 @@ public class GameManager : MonoBehaviour
     public void ReStart()
     {
         SceneManager.LoadScene(0);
+    }
+
+    IEnumerator blackUp()
+    {
+        yield return new WaitForSeconds(0.5f);
+        blackCanvasAlpha = 0f;
     }
 }
