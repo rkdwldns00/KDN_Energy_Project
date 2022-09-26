@@ -34,7 +34,7 @@ public class QuestManager : MonoBehaviour
     public GameObject oxField;
     public GameObject textField;
     //public int maxHp;
-    public int maxScore;
+    public float maxScore;
     //int hp;
     GameObject player;
     int level = 0;

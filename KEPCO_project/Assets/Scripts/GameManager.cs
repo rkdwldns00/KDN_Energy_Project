@@ -25,12 +25,13 @@ public class GameManager : MonoBehaviour
     int nowMap = 0;
     void Start()
     {
+        blackCanvas.gameObject.SetActive(true);
         QuestManager.score = 0;
         for (int i = 1; i < maps.Length; i++)
         {
             maps[i].SetActive(true);
         }
-        questManager.GetComponent<QuestManager>().maxScore = FindObjectsOfType<QuestNPC>().Length;
+        questManager.GetComponent<QuestManager>().maxScore = FindObjectsOfType<QuestNPC>().Length+1;
         Debug.Log("문제상자개수 : " + FindObjectsOfType<QuestNPC>().Length);
         for (int i = 1; i < maps.Length; i++)
         {
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            nextMap();
+            questManager.SetActive(true);
         }
 
         blackCanvas.color = new Color(blackCanvas.color.r, blackCanvas.color.g, blackCanvas.color.b, blackCanvas.color.a + ((blackCanvas.color.a + blackCanvasAlpha) / 2f - blackCanvas.color.a) * Time.deltaTime * 8);

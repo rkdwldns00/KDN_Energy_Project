@@ -63,9 +63,9 @@ public class UiManager : MonoBehaviour
         hpSlider.value = (float)hp/maxhp;
     }*/
 
-    public void scoreShow(float score,int maxScore)
+    public void scoreShow(float score,float maxScore)
     {
         scoreText.text = "Á¡¼ö : " + (int)score;
-        scoreSlider.value = (float)score/(maxScore * 10);
+        scoreSlider.value = score/(maxScore * 10);
     }
 }
