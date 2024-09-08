@@ -24,7 +24,7 @@ public class PlayerControll : MonoBehaviour
         RaycastHit2D hit;
         hit = Physics2D.Raycast(transform.position + Vector3.down * 0.9f, Vector2.down, 0.4f);
         bool ishit = hit.collider != null && !hit.collider.isTrigger;
-        if(ishit && inputSys.GetJumpDown)
+        if (ishit && inputSys.GetJumpDown && animator.GetBool("isGround"))
         {
             rigid.velocity = new Vector2(rigid.velocity.x, jumpPower);
             animator.SetBool("isJump", true);
@@ -48,12 +48,12 @@ public class PlayerControll : MonoBehaviour
         {
             render.flipX = false;
         }
-        else if(inputSys.Hor < 0f)
+        else if (inputSys.Hor < 0f)
         {
             render.flipX = true;
         }
 
-        if(!inputSys.GetHorDown)
+        if (!inputSys.GetHorDown)
         {
             animator.SetBool("isRun", false);
         }
@@ -71,31 +71,31 @@ public class PlayerControll : MonoBehaviour
     {
         if (inputSys.GetHorDown && Mathf.Abs(rigid.velocity.x) < moveSpeed)
         {
-            rigid.AddForce(new Vector2(inputSys.Hor, 0f) * moveSpeed * 30);
+            rigid.velocity = new Vector2(inputSys.Hor * moveSpeed, rigid.velocity.y);
         }
     }
 
-   /* private void OnTriggerStay2D(Collider2D collision)
-    {
-        if(collision.GetComponentInParent<Interaction>() != null && inputSys.GetInteractionDown)
-        {
-            Transform go = collision.transform;
-            while(go.GetComponentInParent<Interaction>() != null && go.GetComponent<Interaction>() == null)
-            {
-                go = go.parent;
-            }
-            Interaction[] inters = go.GetComponents<Interaction>();
-            foreach(Interaction inter in inters)
-            {
-                inter.interaction();
-            }
-            //gameObject.SetActive(false);
-        }
-    }*/
+    /* private void OnTriggerStay2D(Collider2D collision)
+     {
+         if(collision.GetComponentInParent<Interaction>() != null && inputSys.GetInteractionDown)
+         {
+             Transform go = collision.transform;
+             while(go.GetComponentInParent<Interaction>() != null && go.GetComponent<Interaction>() == null)
+             {
+                 go = go.parent;
+             }
+             Interaction[] inters = go.GetComponents<Interaction>();
+             foreach(Interaction inter in inters)
+             {
+                 inter.interaction();
+             }
+             //gameObject.SetActive(false);
+         }
+     }*/
 
     void interactionCheck()
     {
-        Collider2D[] collisions = Physics2D.OverlapBoxAll(transform.position, new Vector2(1, 1),0);
+        Collider2D[] collisions = Physics2D.OverlapBoxAll(transform.position, new Vector2(1, 1), 0);
         foreach (Collider2D collision in collisions)
         {
             if (collision.GetComponentInParent<Interaction>() != null)
